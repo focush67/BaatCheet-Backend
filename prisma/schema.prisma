@@ -1,0 +1,184 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Checkup {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  content String? @default("Hello from Fastify")
+}
+
+model Like {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  postId    String?  @db.ObjectId
+  storyId   String?  @db.ObjectId
+  ownerId   String   @db.ObjectId
+  commentId String?  @db.ObjectId
+  createdAt DateTime @default(now())
+
+  owner   User     @relation(fields: [ownerId], references: [id])
+  post    Post?    @relation(fields: [postId], references: [id])
+  story   Story?   @relation(fields: [storyId], references: [id])
+  comment Comment? @relation(fields: [commentId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  postId    String?  @db.ObjectId
+  storyId   String?  @db.ObjectId
+  content   String
+  ownerId   String   @db.ObjectId
+  isReply   Boolean  @default(false)
+  replyToId String?  @db.ObjectId
+  createdAt DateTime @default(now())
+
+  post    Post?     @relation(fields: [postId], references: [id])
+  story   Story?    @relation(fields: [storyId], references: [id])
+  owner   User      @relation(fields: [ownerId], references: [id])
+  replyTo Comment?  @relation("Replies", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  likes   Like[]
+  replies Comment[] @relation("Replies")
+
+  @@index([postId])
+  @@index([storyId])
+  @@index([ownerId])
+}
+
+model Collection {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  createdAt DateTime @default(now())
+
+  owners CollectionOwner[]
+  posts  CollectionPost[]
+}
+
+model CollectionOwner {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  collectionId String   @db.ObjectId
+  userId       String   @db.ObjectId
+  createdAt    DateTime @default(now())
+
+  collection Collection @relation(fields: [collectionId], references: [id])
+  user       User       @relation(fields: [userId], references: [id])
+
+  @@unique([collectionId, userId])
+}
+
+model CollectionPost {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  collectionId String   @db.ObjectId
+  postId       String   @db.ObjectId
+  createdAt    DateTime @default(now())
+
+  collection Collection @relation(fields: [collectionId], references: [id])
+  post       Post       @relation(fields: [postId], references: [id])
+
+  @@unique([collectionId, postId])
+}
+
+model Tag {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  referenceUserId String   @db.ObjectId
+  createdAt       DateTime @default(now())
+
+  referenceUser User @relation(fields: [referenceUserId], references: [id])
+}
+
+model Highlight {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  coverPhoto String?
+  title      String
+  createdAt  DateTime @default(now())
+
+  owners  HighlightOwner[]
+  stories HighlightStory[]
+}
+
+model HighlightOwner {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  highlightId String   @db.ObjectId
+  userId      String   @db.ObjectId
+  createdAt   DateTime @default(now())
+
+  highlight Highlight @relation(fields: [highlightId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([highlightId, userId])
+}
+
+model HighlightStory {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  highlightId String   @db.ObjectId
+  storyId     String   @db.ObjectId
+  createdAt   DateTime @default(now())
+
+  highlight Highlight @relation(fields: [highlightId], references: [id])
+  story     Story     @relation(fields: [storyId], references: [id])
+
+  @@unique([highlightId, storyId])
+}
+
+model Story {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  ownerId   String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  owner      User             @relation(fields: [ownerId], references: [id])
+  highlights HighlightStory[]
+  likes      Like[]
+  comments   Comment[]
+}
+
+model Post {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId    String   @db.ObjectId
+  coverPhoto String
+  caption    String?
+  createdAt  DateTime @default(now())
+
+  owner       User             @relation(fields: [ownerId], references: [id])
+  likes       Like[]
+  comments    Comment[]
+  collections CollectionPost[]
+
+  @@index([ownerId])
+}
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  username       String   @unique
+  email          String   @unique
+  name           String?
+  profilePicture String
+  bio            String?
+  createdAt      DateTime @default(now())
+
+  followers   Follow[]          @relation("UserFollowers")
+  following   Follow[]          @relation("UserFollowing")
+  likes       Like[]
+  comments    Comment[]
+  collections CollectionOwner[]
+  highlights  HighlightOwner[]
+  stories     Story[]
+  posts       Post[]
+  tags        Tag[]
+}
+
+model Follow {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  sourceId  String   @db.ObjectId
+  targetId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  follower  User @relation("UserFollowers", fields: [sourceId], references: [id])
+  following User @relation("UserFollowing", fields: [targetId], references: [id])
+
+  @@unique([sourceId, targetId])
+}
