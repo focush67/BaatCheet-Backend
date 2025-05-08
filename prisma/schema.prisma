@@ -87,7 +87,9 @@ model Tag {
   referenceUserId String   @db.ObjectId
   createdAt       DateTime @default(now())
 
-  referenceUser User @relation(fields: [referenceUserId], references: [id])
+  referenceUser User    @relation(fields: [referenceUserId], references: [id])
+  post          Post?   @relation(fields: [postId], references: [id])
+  postId        String? @db.ObjectId
 }
 
 model Highlight {
@@ -146,6 +148,7 @@ model Post {
   owner       User             @relation(fields: [ownerId], references: [id])
   likes       Like[]
   comments    Comment[]
+  tags        Tag[]
   collections CollectionPost[]
 
   @@index([ownerId])

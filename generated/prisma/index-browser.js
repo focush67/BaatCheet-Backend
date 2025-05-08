@@ -161,7 +161,8 @@ exports.Prisma.CollectionPostScalarFieldEnum = {
 exports.Prisma.TagScalarFieldEnum = {
   id: 'id',
   referenceUserId: 'referenceUserId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  postId: 'postId'
 };
 
 exports.Prisma.HighlightScalarFieldEnum = {
