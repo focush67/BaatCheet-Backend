@@ -92,5 +92,117 @@ export const reactionResolvers = {
       return replies as Comment[];
     },
   },
+  Mutation: {
+    addLikeToStory: async (
+      _: any,
+      { storyID, ownerID }: { storyID: string; ownerID: string }
+    ) => {
+      try {
+        await prisma.like.upsert({
+          where: {
+            ownerId_storyId: {
+              ownerId: ownerID,
+              storyId: storyID,
+            },
+          },
+          create: {
+            storyId: storyID,
+            ownerId: ownerID,
+          },
+          update: {},
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    },
+
+    removeLikeFromStory: async (
+      _: any,
+      { storyID, ownerID }: { storyID: string; ownerID: string }
+    ) => {
+      const deleted = await prisma.like.deleteMany({
+        where: {
+          storyId: storyID,
+          ownerId: ownerID,
+        },
+      });
+      return deleted.count > 0;
+    },
+
+    addLikeToPost: async (
+      _: any,
+      { postID, ownerID }: { postID: string; ownerID: string }
+    ) => {
+      try {
+        await prisma.like.upsert({
+          where: {
+            ownerId_postId: {
+              ownerId: ownerID,
+              postId: postID,
+            },
+          },
+          create: {
+            postId: postID,
+            ownerId: ownerID,
+          },
+          update: {},
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    },
+
+    removeLikeFromPost: async (
+      _: any,
+      { postID, ownerID }: { postID: string; ownerID: string }
+    ) => {
+      const deleted = await prisma.like.deleteMany({
+        where: {
+          postId: postID,
+          ownerId: ownerID,
+        },
+      });
+      return deleted.count > 0;
+    },
+
+    addLikeToComment: async (
+      _: any,
+      { commentID, ownerID }: { commentID: string; ownerID: string }
+    ) => {
+      try {
+        await prisma.like.upsert({
+          where: {
+            ownerId_commentId: {
+              ownerId: ownerID,
+              commentId: commentID,
+            },
+          },
+          create: {
+            commentId: commentID,
+            ownerId: ownerID,
+          },
+          update: {},
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    },
+
+    removeLikeFromComment: async (
+      _: any,
+      { commentID, ownerID }: { commentID: string; ownerID: string }
+    ) => {
+      const deleted = await prisma.like.deleteMany({
+        where: {
+          commentId: commentID,
+          ownerId: ownerID,
+        },
+      });
+      return deleted.count > 0;
+    },
+  },
   Comment: {},
 };

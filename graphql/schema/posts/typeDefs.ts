@@ -6,7 +6,8 @@ export const postTypeDefs = gql`
     coverPhoto: String!
     caption: String
     createdAt: String
-    owner: User!
+    ownerId: ID!
+    owner: User
     likes: [Like!]
     comments: [Comment!]
     tags: [Tag!]
@@ -21,12 +22,7 @@ export const postTypeDefs = gql`
   input CreatePostInput {
     coverPhoto: String!
     caption: String
-    owner: User
-  }
-
-  input CreateLikeOnPost {
-    postID: ID!
-    likedBy: User
+    ownerId: String!
   }
 
   type WallPost {

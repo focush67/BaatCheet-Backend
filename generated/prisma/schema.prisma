@@ -25,6 +25,10 @@ model Like {
   post    Post?    @relation(fields: [postId], references: [id])
   story   Story?   @relation(fields: [storyId], references: [id])
   comment Comment? @relation(fields: [commentId], references: [id])
+
+  @@unique([ownerId, postId])
+  @@unique([ownerId, storyId])
+  @@unique([ownerId, commentId])
 }
 
 model Comment {

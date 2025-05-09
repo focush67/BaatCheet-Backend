@@ -29,6 +29,14 @@ export const reactionTypeDefs = gql`
     replies: [Comment!]
   }
 
+  type Tag {
+    id: ID!
+    postId: ID!
+    referenceUserId: ID!
+    referenceUser: User!
+    post: Post!
+  }
+
   type Query {
     getLikesForPost(postID: ID!): [Like!]
     getLikesForComment(commentID: ID!): [Like!]
@@ -41,13 +49,13 @@ export const reactionTypeDefs = gql`
   }
 
   type Mutation {
-    addLikeToStory(storyID: ID!): Boolean
-    removeLikeFromStory(storyID: ID!): [Like!]
+    addLikeToStory(storyID: ID!, ownerID: ID!): Boolean
+    removeLikeFromStory(storyID: ID!, ownerID: ID!): [Like!]
 
-    addLikeToPost(postID: ID!): Boolean
-    removeLikeFromPost(postID: ID!): [Like!]
+    addLikeToPost(postID: ID!, ownerID: ID!): Boolean
+    removeLikeFromPost(postID: ID!, ownerID: ID!): [Like!]
 
-    addLikeToComment(commentID: ID!): Boolean
-    removeLikeFromComment(commentID: ID!): [Like!]
+    addLikeToComment(commentID: ID!, ownerID: ID!): Boolean
+    removeLikeFromComment(commentID: ID!, ownerID: ID!): [Like!]
   }
 `;
