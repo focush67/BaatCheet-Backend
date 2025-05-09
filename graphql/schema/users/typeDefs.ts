@@ -13,9 +13,9 @@ export const userTypeDefs = gql`
     following: [User!] # Self-referencing relationship
     likes: [Like!]
     comments: [Comment!]
-    collections: [CollectionOwner!]
+    collections: [UserCollection!]
     highlights: [HighlightOwner!]
-    stories: [Story!]
+    stories: [UserStory!]
     posts: [Post!]
     taggedPosts: [Tag!]
   }
@@ -23,6 +23,19 @@ export const userTypeDefs = gql`
   type UserCollection {
     collection: Collection!
     posts: [Post!]
+  }
+
+  type UserHighlight {
+    highlight: Highlight!
+    stories: [Story!]
+  }
+
+  type UserStory {
+    id: ID!
+    content: String!
+    createdAt: String!
+    likes: [Like!]
+    comments: [Comment!]
   }
 
   # Input types for mutations
