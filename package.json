@@ -10,7 +10,7 @@
     "start": "nodemon index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sparsh Verma",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {

@@ -8,14 +8,14 @@ export const userTypeDefs = gql`
     name: String
     profilePicture: String!
     bio: String
-    createdAt: String! # Using String instead of DateTime for simplicity
-    followers: [User!] # Self-referencing relationship
-    following: [User!] # Self-referencing relationship
+    createdAt: String!
+    followers: [User!]
+    following: [User!]
     likes: [Like!]
     comments: [Comment!]
-    collections: [CollectionOwner!]
+    collections: [UserCollection!]
     highlights: [HighlightOwner!]
-    stories: [Story!]
+    stories: [UserStory!]
     posts: [Post!]
     taggedPosts: [Tag!]
   }
@@ -23,6 +23,19 @@ export const userTypeDefs = gql`
   type UserCollection {
     collection: Collection!
     posts: [Post!]
+  }
+
+  type UserHighlight {
+    highlight: Highlight!
+    stories: [Story!]
+  }
+
+  type UserStory {
+    id: ID!
+    content: String!
+    createdAt: String!
+    likes: [Like!]
+    comments: [Comment!]
   }
 
   # Input types for mutations

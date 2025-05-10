@@ -17006,6 +17006,9 @@ export namespace Prisma {
 
   export type LikeWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    ownerId_postId?: LikeOwnerIdPostIdCompoundUniqueInput
+    ownerId_storyId?: LikeOwnerIdStoryIdCompoundUniqueInput
+    ownerId_commentId?: LikeOwnerIdCommentIdCompoundUniqueInput
     AND?: LikeWhereInput | LikeWhereInput[]
     OR?: LikeWhereInput[]
     NOT?: LikeWhereInput | LikeWhereInput[]
@@ -17018,7 +17021,7 @@ export namespace Prisma {
     post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
     story?: XOR<StoryNullableScalarRelationFilter, StoryWhereInput> | null
     comment?: XOR<CommentNullableScalarRelationFilter, CommentWhereInput> | null
-  }, "id">
+  }, "id" | "ownerId_postId" | "ownerId_storyId" | "ownerId_commentId">
 
   export type LikeOrderByWithAggregationInput = {
     id?: SortOrder
@@ -18625,6 +18628,21 @@ export namespace Prisma {
   export type CommentNullableScalarRelationFilter = {
     is?: CommentWhereInput | null
     isNot?: CommentWhereInput | null
+  }
+
+  export type LikeOwnerIdPostIdCompoundUniqueInput = {
+    ownerId: string
+    postId: string
+  }
+
+  export type LikeOwnerIdStoryIdCompoundUniqueInput = {
+    ownerId: string
+    storyId: string
+  }
+
+  export type LikeOwnerIdCommentIdCompoundUniqueInput = {
+    ownerId: string
+    commentId: string
   }
 
   export type LikeCountOrderByAggregateInput = {

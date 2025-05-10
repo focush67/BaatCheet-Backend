@@ -11,47 +11,6 @@ export const userResolvers = {
         where: { id },
       });
     },
-    getPostsCreatedByUser: async (_: any, { userID }: { userID: string }) => {
-      return prisma.post.findMany({
-        where: {
-          ownerId: userID,
-        },
-        include: {
-          likes: true,
-          comments: true,
-        },
-      });
-    },
-    getTaggedPostsForUser: async (_: any, { userID }: { userID: string }) => {
-      return await prisma.tag.findMany({
-        where: {
-          referenceUserId: userID,
-        },
-        include: {
-          post: true,
-        },
-      });
-    },
-    getCollectionsForUser: async (_: any, { userID }: { userID: string }) => {
-      return await prisma.collectionOwner.findMany({
-        where: {
-          userId: userID,
-        },
-        include: {
-          collection: true,
-        },
-      });
-    },
-    getHighlightsForUser: async (_: any, { userID }: { userID: string }) => {
-      return await prisma.highlightOwner.findMany({
-        where: {
-          userId: userID,
-        },
-        include: {
-          highlight: true,
-        },
-      });
-    },
     searchUsers: async (_: any, { username }: { username: string }) => {
       return await prisma.user.findMany({
         where: {
