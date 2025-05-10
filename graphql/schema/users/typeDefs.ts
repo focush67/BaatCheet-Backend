@@ -20,29 +20,6 @@ export const userTypeDefs = gql`
     taggedPosts: [Tag!]
   }
 
-  type Collection {
-    id: ID!
-    title: String!
-    owners: [CollectionOwner!]
-    posts: [CollectionPost!]
-  }
-
-  type CollectionOwner {
-    id: ID!
-    collectionId: String!
-    userId: String!
-    collection: Collection!
-    user: User!
-  }
-
-  type CollectionPost {
-    id: ID!
-    collectionId: String!
-    postId: String!
-    colleciton: Collection!
-    post: Post!
-  }
-
   type UserCollection {
     collection: Collection!
     posts: [Post!]
@@ -59,40 +36,6 @@ export const userTypeDefs = gql`
     createdAt: String!
     likes: [Like!]
     comments: [Comment!]
-  }
-
-  type Highlight {
-    id: ID!
-    coverPhoto: String!
-    title: String!
-    owners: [HighlightOwner!]
-    stories: [HighlightStory!]
-  }
-
-  type Story {
-    id: ID!
-    content: String!
-    ownerId: String!
-    owner: User!
-    highlights: [HighlightStory!]
-    likes: [Like!]
-    comments: [Comment!]
-  }
-
-  type HighlightStory {
-    id: ID!
-    highlightId: String!
-    storyId: String!
-    highlight: Highlight!
-    story: Story!
-  }
-
-  type HighlightOwner {
-    id: ID!
-    highlightId: ID!
-    userId: ID!
-    highlight: Highlight!
-    user: User!
   }
 
   # Input types for mutations

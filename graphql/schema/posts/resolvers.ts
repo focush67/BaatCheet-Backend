@@ -49,7 +49,18 @@ export const postResolvers = {
   },
 
   Mutation: {
-    createPost: async (_: any, { input }: { input: any }) => {
+    createPost: async (
+      _: any,
+      {
+        input,
+      }: {
+        input: {
+          coverPhoto: string;
+          caption: string;
+          ownerId: string;
+        };
+      }
+    ) => {
       const newPost = await prisma.post.create({
         data: {
           coverPhoto: input.coverPhoto,

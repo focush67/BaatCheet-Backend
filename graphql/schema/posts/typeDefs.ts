@@ -19,6 +19,29 @@ export const postTypeDefs = gql`
     owners: [User!]
   }
 
+  type Collection {
+    id: ID!
+    title: String!
+    owners: [CollectionOwner!]
+    posts: [CollectionPost!]
+  }
+
+  type CollectionOwner {
+    id: ID!
+    collectionId: String!
+    userId: String!
+    collection: Collection!
+    user: User!
+  }
+
+  type CollectionPost {
+    id: ID!
+    collectionId: String!
+    postId: String!
+    colleciton: Collection!
+    post: Post!
+  }
+
   input CreatePostInput {
     coverPhoto: String!
     caption: String
