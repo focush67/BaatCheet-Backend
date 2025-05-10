@@ -2177,12 +2177,14 @@ export namespace Prisma {
   export type PostCountOutputType = {
     likes: number
     comments: number
+    tags: number
     collections: number
   }
 
   export type PostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     likes?: boolean | PostCountOutputTypeCountLikesArgs
     comments?: boolean | PostCountOutputTypeCountCommentsArgs
+    tags?: boolean | PostCountOutputTypeCountTagsArgs
     collections?: boolean | PostCountOutputTypeCountCollectionsArgs
   }
 
@@ -2209,6 +2211,13 @@ export namespace Prisma {
    */
   export type PostCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CommentWhereInput
+  }
+
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TagWhereInput
   }
 
   /**
@@ -8392,18 +8401,21 @@ export namespace Prisma {
     id: string | null
     referenceUserId: string | null
     createdAt: Date | null
+    postId: string | null
   }
 
   export type TagMaxAggregateOutputType = {
     id: string | null
     referenceUserId: string | null
     createdAt: Date | null
+    postId: string | null
   }
 
   export type TagCountAggregateOutputType = {
     id: number
     referenceUserId: number
     createdAt: number
+    postId: number
     _all: number
   }
 
@@ -8412,18 +8424,21 @@ export namespace Prisma {
     id?: true
     referenceUserId?: true
     createdAt?: true
+    postId?: true
   }
 
   export type TagMaxAggregateInputType = {
     id?: true
     referenceUserId?: true
     createdAt?: true
+    postId?: true
   }
 
   export type TagCountAggregateInputType = {
     id?: true
     referenceUserId?: true
     createdAt?: true
+    postId?: true
     _all?: true
   }
 
@@ -8503,6 +8518,7 @@ export namespace Prisma {
     id: string
     referenceUserId: string
     createdAt: Date
+    postId: string | null
     _count: TagCountAggregateOutputType | null
     _min: TagMinAggregateOutputType | null
     _max: TagMaxAggregateOutputType | null
@@ -8526,7 +8542,9 @@ export namespace Prisma {
     id?: boolean
     referenceUserId?: boolean
     createdAt?: boolean
+    postId?: boolean
     referenceUser?: boolean | UserDefaultArgs<ExtArgs>
+    post?: boolean | Tag$postArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
 
 
@@ -8535,22 +8553,26 @@ export namespace Prisma {
     id?: boolean
     referenceUserId?: boolean
     createdAt?: boolean
+    postId?: boolean
   }
 
-  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referenceUserId" | "createdAt", ExtArgs["result"]["tag"]>
+  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referenceUserId" | "createdAt" | "postId", ExtArgs["result"]["tag"]>
   export type TagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     referenceUser?: boolean | UserDefaultArgs<ExtArgs>
+    post?: boolean | Tag$postArgs<ExtArgs>
   }
 
   export type $TagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Tag"
     objects: {
       referenceUser: Prisma.$UserPayload<ExtArgs>
+      post: Prisma.$PostPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       referenceUserId: string
       createdAt: Date
+      postId: string | null
     }, ExtArgs["result"]["tag"]>
     composites: {}
   }
@@ -8915,6 +8937,7 @@ export namespace Prisma {
   export interface Prisma__TagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     referenceUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    post<T extends Tag$postArgs<ExtArgs> = {}>(args?: Subset<T, Tag$postArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8947,6 +8970,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Tag", 'String'>
     readonly referenceUserId: FieldRef<"Tag", 'String'>
     readonly createdAt: FieldRef<"Tag", 'DateTime'>
+    readonly postId: FieldRef<"Tag", 'String'>
   }
     
 
@@ -9314,6 +9338,25 @@ export namespace Prisma {
      * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
      */
     options?: InputJsonValue
+  }
+
+  /**
+   * Tag.post
+   */
+  export type Tag$postArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
   }
 
   /**
@@ -13522,6 +13565,7 @@ export namespace Prisma {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     likes?: boolean | Post$likesArgs<ExtArgs>
     comments?: boolean | Post$commentsArgs<ExtArgs>
+    tags?: boolean | Post$tagsArgs<ExtArgs>
     collections?: boolean | Post$collectionsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
@@ -13541,6 +13585,7 @@ export namespace Prisma {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     likes?: boolean | Post$likesArgs<ExtArgs>
     comments?: boolean | Post$commentsArgs<ExtArgs>
+    tags?: boolean | Post$tagsArgs<ExtArgs>
     collections?: boolean | Post$collectionsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -13551,6 +13596,7 @@ export namespace Prisma {
       owner: Prisma.$UserPayload<ExtArgs>
       likes: Prisma.$LikePayload<ExtArgs>[]
       comments: Prisma.$CommentPayload<ExtArgs>[]
+      tags: Prisma.$TagPayload<ExtArgs>[]
       collections: Prisma.$CollectionPostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -13925,6 +13971,7 @@ export namespace Prisma {
     owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     likes<T extends Post$likesArgs<ExtArgs> = {}>(args?: Subset<T, Post$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Post$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Post$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tags<T extends Post$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Post$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     collections<T extends Post$collectionsArgs<ExtArgs> = {}>(args?: Subset<T, Post$collectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionPostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -14375,6 +14422,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+  /**
+   * Post.tags
+   */
+  export type Post$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    where?: TagWhereInput
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    cursor?: TagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
   }
 
   /**
@@ -16713,7 +16784,8 @@ export namespace Prisma {
   export const TagScalarFieldEnum: {
     id: 'id',
     referenceUserId: 'referenceUserId',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    postId: 'postId'
   };
 
   export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
@@ -17220,14 +17292,18 @@ export namespace Prisma {
     id?: StringFilter<"Tag"> | string
     referenceUserId?: StringFilter<"Tag"> | string
     createdAt?: DateTimeFilter<"Tag"> | Date | string
+    postId?: StringNullableFilter<"Tag"> | string | null
     referenceUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
   }
 
   export type TagOrderByWithRelationInput = {
     id?: SortOrder
     referenceUserId?: SortOrder
     createdAt?: SortOrder
+    postId?: SortOrder
     referenceUser?: UserOrderByWithRelationInput
+    post?: PostOrderByWithRelationInput
   }
 
   export type TagWhereUniqueInput = Prisma.AtLeast<{
@@ -17237,13 +17313,16 @@ export namespace Prisma {
     NOT?: TagWhereInput | TagWhereInput[]
     referenceUserId?: StringFilter<"Tag"> | string
     createdAt?: DateTimeFilter<"Tag"> | Date | string
+    postId?: StringNullableFilter<"Tag"> | string | null
     referenceUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
   }, "id">
 
   export type TagOrderByWithAggregationInput = {
     id?: SortOrder
     referenceUserId?: SortOrder
     createdAt?: SortOrder
+    postId?: SortOrder
     _count?: TagCountOrderByAggregateInput
     _max?: TagMaxOrderByAggregateInput
     _min?: TagMinOrderByAggregateInput
@@ -17256,6 +17335,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Tag"> | string
     referenceUserId?: StringWithAggregatesFilter<"Tag"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
+    postId?: StringNullableWithAggregatesFilter<"Tag"> | string | null
   }
 
   export type HighlightWhereInput = {
@@ -17490,6 +17570,7 @@ export namespace Prisma {
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
     likes?: LikeListRelationFilter
     comments?: CommentListRelationFilter
+    tags?: TagListRelationFilter
     collections?: CollectionPostListRelationFilter
   }
 
@@ -17502,6 +17583,7 @@ export namespace Prisma {
     owner?: UserOrderByWithRelationInput
     likes?: LikeOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
+    tags?: TagOrderByRelationAggregateInput
     collections?: CollectionPostOrderByRelationAggregateInput
   }
 
@@ -17517,6 +17599,7 @@ export namespace Prisma {
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
     likes?: LikeListRelationFilter
     comments?: CommentListRelationFilter
+    tags?: TagListRelationFilter
     collections?: CollectionPostListRelationFilter
   }, "id">
 
@@ -17984,28 +18067,33 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     referenceUser: UserCreateNestedOneWithoutTagsInput
+    post?: PostCreateNestedOneWithoutTagsInput
   }
 
   export type TagUncheckedCreateInput = {
     id?: string
     referenceUserId: string
     createdAt?: Date | string
+    postId?: string | null
   }
 
   export type TagUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     referenceUser?: UserUpdateOneRequiredWithoutTagsNestedInput
+    post?: PostUpdateOneWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateInput = {
     referenceUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TagCreateManyInput = {
     id?: string
     referenceUserId: string
     createdAt?: Date | string
+    postId?: string | null
   }
 
   export type TagUpdateManyMutationInput = {
@@ -18015,6 +18103,7 @@ export namespace Prisma {
   export type TagUncheckedUpdateManyInput = {
     referenceUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type HighlightCreateInput = {
@@ -18220,6 +18309,7 @@ export namespace Prisma {
     owner: UserCreateNestedOneWithoutPostsInput
     likes?: LikeCreateNestedManyWithoutPostInput
     comments?: CommentCreateNestedManyWithoutPostInput
+    tags?: TagCreateNestedManyWithoutPostInput
     collections?: CollectionPostCreateNestedManyWithoutPostInput
   }
 
@@ -18231,6 +18321,7 @@ export namespace Prisma {
     createdAt?: Date | string
     likes?: LikeUncheckedCreateNestedManyWithoutPostInput
     comments?: CommentUncheckedCreateNestedManyWithoutPostInput
+    tags?: TagUncheckedCreateNestedManyWithoutPostInput
     collections?: CollectionPostUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -18241,6 +18332,7 @@ export namespace Prisma {
     owner?: UserUpdateOneRequiredWithoutPostsNestedInput
     likes?: LikeUpdateManyWithoutPostNestedInput
     comments?: CommentUpdateManyWithoutPostNestedInput
+    tags?: TagUpdateManyWithoutPostNestedInput
     collections?: CollectionPostUpdateManyWithoutPostNestedInput
   }
 
@@ -18251,6 +18343,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likes?: LikeUncheckedUpdateManyWithoutPostNestedInput
     comments?: CommentUncheckedUpdateManyWithoutPostNestedInput
+    tags?: TagUncheckedUpdateManyWithoutPostNestedInput
     collections?: CollectionPostUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -18745,18 +18838,21 @@ export namespace Prisma {
     id?: SortOrder
     referenceUserId?: SortOrder
     createdAt?: SortOrder
+    postId?: SortOrder
   }
 
   export type TagMaxOrderByAggregateInput = {
     id?: SortOrder
     referenceUserId?: SortOrder
     createdAt?: SortOrder
+    postId?: SortOrder
   }
 
   export type TagMinOrderByAggregateInput = {
     id?: SortOrder
     referenceUserId?: SortOrder
     createdAt?: SortOrder
+    postId?: SortOrder
   }
 
   export type HighlightOwnerListRelationFilter = {
@@ -18883,6 +18979,16 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type TagListRelationFilter = {
+    every?: TagWhereInput
+    some?: TagWhereInput
+    none?: TagWhereInput
+  }
+
+  export type TagOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PostCountOrderByAggregateInput = {
     id?: SortOrder
     ownerId?: SortOrder
@@ -18925,12 +19031,6 @@ export namespace Prisma {
     none?: PostWhereInput
   }
 
-  export type TagListRelationFilter = {
-    every?: TagWhereInput
-    some?: TagWhereInput
-    none?: TagWhereInput
-  }
-
   export type FollowOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -18940,10 +19040,6 @@ export namespace Prisma {
   }
 
   export type PostOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TagOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19374,12 +19470,28 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type PostCreateNestedOneWithoutTagsInput = {
+    create?: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutTagsInput
+    connect?: PostWhereUniqueInput
+  }
+
   export type UserUpdateOneRequiredWithoutTagsNestedInput = {
     create?: XOR<UserCreateWithoutTagsInput, UserUncheckedCreateWithoutTagsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTagsInput
     upsert?: UserUpsertWithoutTagsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTagsInput, UserUpdateWithoutTagsInput>, UserUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type PostUpdateOneWithoutTagsNestedInput = {
+    create?: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutTagsInput
+    upsert?: PostUpsertWithoutTagsInput
+    disconnect?: boolean
+    delete?: PostWhereInput | boolean
+    connect?: PostWhereUniqueInput
+    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutTagsInput, PostUpdateWithoutTagsInput>, PostUncheckedUpdateWithoutTagsInput>
   }
 
   export type HighlightOwnerCreateNestedManyWithoutHighlightInput = {
@@ -19682,6 +19794,13 @@ export namespace Prisma {
     connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
+  export type TagCreateNestedManyWithoutPostInput = {
+    create?: XOR<TagCreateWithoutPostInput, TagUncheckedCreateWithoutPostInput> | TagCreateWithoutPostInput[] | TagUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutPostInput | TagCreateOrConnectWithoutPostInput[]
+    createMany?: TagCreateManyPostInputEnvelope
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+  }
+
   export type CollectionPostCreateNestedManyWithoutPostInput = {
     create?: XOR<CollectionPostCreateWithoutPostInput, CollectionPostUncheckedCreateWithoutPostInput> | CollectionPostCreateWithoutPostInput[] | CollectionPostUncheckedCreateWithoutPostInput[]
     connectOrCreate?: CollectionPostCreateOrConnectWithoutPostInput | CollectionPostCreateOrConnectWithoutPostInput[]
@@ -19701,6 +19820,13 @@ export namespace Prisma {
     connectOrCreate?: CommentCreateOrConnectWithoutPostInput | CommentCreateOrConnectWithoutPostInput[]
     createMany?: CommentCreateManyPostInputEnvelope
     connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  }
+
+  export type TagUncheckedCreateNestedManyWithoutPostInput = {
+    create?: XOR<TagCreateWithoutPostInput, TagUncheckedCreateWithoutPostInput> | TagCreateWithoutPostInput[] | TagUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutPostInput | TagCreateOrConnectWithoutPostInput[]
+    createMany?: TagCreateManyPostInputEnvelope
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
   export type CollectionPostUncheckedCreateNestedManyWithoutPostInput = {
@@ -19746,6 +19872,20 @@ export namespace Prisma {
     deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
+  export type TagUpdateManyWithoutPostNestedInput = {
+    create?: XOR<TagCreateWithoutPostInput, TagUncheckedCreateWithoutPostInput> | TagCreateWithoutPostInput[] | TagUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutPostInput | TagCreateOrConnectWithoutPostInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutPostInput | TagUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: TagCreateManyPostInputEnvelope
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutPostInput | TagUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutPostInput | TagUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
   export type CollectionPostUpdateManyWithoutPostNestedInput = {
     create?: XOR<CollectionPostCreateWithoutPostInput, CollectionPostUncheckedCreateWithoutPostInput> | CollectionPostCreateWithoutPostInput[] | CollectionPostUncheckedCreateWithoutPostInput[]
     connectOrCreate?: CollectionPostCreateOrConnectWithoutPostInput | CollectionPostCreateOrConnectWithoutPostInput[]
@@ -19786,6 +19926,20 @@ export namespace Prisma {
     update?: CommentUpdateWithWhereUniqueWithoutPostInput | CommentUpdateWithWhereUniqueWithoutPostInput[]
     updateMany?: CommentUpdateManyWithWhereWithoutPostInput | CommentUpdateManyWithWhereWithoutPostInput[]
     deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
+  export type TagUncheckedUpdateManyWithoutPostNestedInput = {
+    create?: XOR<TagCreateWithoutPostInput, TagUncheckedCreateWithoutPostInput> | TagCreateWithoutPostInput[] | TagUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutPostInput | TagCreateOrConnectWithoutPostInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutPostInput | TagUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: TagCreateManyPostInputEnvelope
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutPostInput | TagUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutPostInput | TagUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
   export type CollectionPostUncheckedUpdateManyWithoutPostNestedInput = {
@@ -20381,6 +20535,7 @@ export namespace Prisma {
     createdAt?: Date | string
     owner: UserCreateNestedOneWithoutPostsInput
     comments?: CommentCreateNestedManyWithoutPostInput
+    tags?: TagCreateNestedManyWithoutPostInput
     collections?: CollectionPostCreateNestedManyWithoutPostInput
   }
 
@@ -20391,6 +20546,7 @@ export namespace Prisma {
     caption?: string | null
     createdAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutPostInput
+    tags?: TagUncheckedCreateNestedManyWithoutPostInput
     collections?: CollectionPostUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -20513,6 +20669,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutPostsNestedInput
     comments?: CommentUpdateManyWithoutPostNestedInput
+    tags?: TagUpdateManyWithoutPostNestedInput
     collections?: CollectionPostUpdateManyWithoutPostNestedInput
   }
 
@@ -20522,6 +20679,7 @@ export namespace Prisma {
     caption?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutPostNestedInput
+    tags?: TagUncheckedUpdateManyWithoutPostNestedInput
     collections?: CollectionPostUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -20592,6 +20750,7 @@ export namespace Prisma {
     createdAt?: Date | string
     owner: UserCreateNestedOneWithoutPostsInput
     likes?: LikeCreateNestedManyWithoutPostInput
+    tags?: TagCreateNestedManyWithoutPostInput
     collections?: CollectionPostCreateNestedManyWithoutPostInput
   }
 
@@ -20602,6 +20761,7 @@ export namespace Prisma {
     caption?: string | null
     createdAt?: Date | string
     likes?: LikeUncheckedCreateNestedManyWithoutPostInput
+    tags?: TagUncheckedCreateNestedManyWithoutPostInput
     collections?: CollectionPostUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -20778,6 +20938,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutPostsNestedInput
     likes?: LikeUpdateManyWithoutPostNestedInput
+    tags?: TagUpdateManyWithoutPostNestedInput
     collections?: CollectionPostUpdateManyWithoutPostNestedInput
   }
 
@@ -20787,6 +20948,7 @@ export namespace Prisma {
     caption?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likes?: LikeUncheckedUpdateManyWithoutPostNestedInput
+    tags?: TagUncheckedUpdateManyWithoutPostNestedInput
     collections?: CollectionPostUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -21202,6 +21364,7 @@ export namespace Prisma {
     owner: UserCreateNestedOneWithoutPostsInput
     likes?: LikeCreateNestedManyWithoutPostInput
     comments?: CommentCreateNestedManyWithoutPostInput
+    tags?: TagCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutCollectionsInput = {
@@ -21212,6 +21375,7 @@ export namespace Prisma {
     createdAt?: Date | string
     likes?: LikeUncheckedCreateNestedManyWithoutPostInput
     comments?: CommentUncheckedCreateNestedManyWithoutPostInput
+    tags?: TagUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutCollectionsInput = {
@@ -21260,6 +21424,7 @@ export namespace Prisma {
     owner?: UserUpdateOneRequiredWithoutPostsNestedInput
     likes?: LikeUpdateManyWithoutPostNestedInput
     comments?: CommentUpdateManyWithoutPostNestedInput
+    tags?: TagUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutCollectionsInput = {
@@ -21269,6 +21434,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likes?: LikeUncheckedUpdateManyWithoutPostNestedInput
     comments?: CommentUncheckedUpdateManyWithoutPostNestedInput
+    tags?: TagUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type UserCreateWithoutTagsInput = {
@@ -21310,6 +21476,33 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutTagsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutTagsInput, UserUncheckedCreateWithoutTagsInput>
+  }
+
+  export type PostCreateWithoutTagsInput = {
+    id?: string
+    coverPhoto: string
+    caption?: string | null
+    createdAt?: Date | string
+    owner: UserCreateNestedOneWithoutPostsInput
+    likes?: LikeCreateNestedManyWithoutPostInput
+    comments?: CommentCreateNestedManyWithoutPostInput
+    collections?: CollectionPostCreateNestedManyWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutTagsInput = {
+    id?: string
+    ownerId: string
+    coverPhoto: string
+    caption?: string | null
+    createdAt?: Date | string
+    likes?: LikeUncheckedCreateNestedManyWithoutPostInput
+    comments?: CommentUncheckedCreateNestedManyWithoutPostInput
+    collections?: CollectionPostUncheckedCreateNestedManyWithoutPostInput
+  }
+
+  export type PostCreateOrConnectWithoutTagsInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput>
   }
 
   export type UserUpsertWithoutTagsInput = {
@@ -21355,6 +21548,37 @@ export namespace Prisma {
     highlights?: HighlightOwnerUncheckedUpdateManyWithoutUserNestedInput
     stories?: StoryUncheckedUpdateManyWithoutOwnerNestedInput
     posts?: PostUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type PostUpsertWithoutTagsInput = {
+    update: XOR<PostUpdateWithoutTagsInput, PostUncheckedUpdateWithoutTagsInput>
+    create: XOR<PostCreateWithoutTagsInput, PostUncheckedCreateWithoutTagsInput>
+    where?: PostWhereInput
+  }
+
+  export type PostUpdateToOneWithWhereWithoutTagsInput = {
+    where?: PostWhereInput
+    data: XOR<PostUpdateWithoutTagsInput, PostUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type PostUpdateWithoutTagsInput = {
+    coverPhoto?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutPostsNestedInput
+    likes?: LikeUpdateManyWithoutPostNestedInput
+    comments?: CommentUpdateManyWithoutPostNestedInput
+    collections?: CollectionPostUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutTagsInput = {
+    ownerId?: StringFieldUpdateOperationsInput | string
+    coverPhoto?: StringFieldUpdateOperationsInput | string
+    caption?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    likes?: LikeUncheckedUpdateManyWithoutPostNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutPostNestedInput
+    collections?: CollectionPostUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type HighlightOwnerCreateWithoutHighlightInput = {
@@ -21991,6 +22215,27 @@ export namespace Prisma {
     data: CommentCreateManyPostInput | CommentCreateManyPostInput[]
   }
 
+  export type TagCreateWithoutPostInput = {
+    id?: string
+    createdAt?: Date | string
+    referenceUser: UserCreateNestedOneWithoutTagsInput
+  }
+
+  export type TagUncheckedCreateWithoutPostInput = {
+    id?: string
+    referenceUserId: string
+    createdAt?: Date | string
+  }
+
+  export type TagCreateOrConnectWithoutPostInput = {
+    where: TagWhereUniqueInput
+    create: XOR<TagCreateWithoutPostInput, TagUncheckedCreateWithoutPostInput>
+  }
+
+  export type TagCreateManyPostInputEnvelope = {
+    data: TagCreateManyPostInput | TagCreateManyPostInput[]
+  }
+
   export type CollectionPostCreateWithoutPostInput = {
     id?: string
     createdAt?: Date | string
@@ -22087,6 +22332,32 @@ export namespace Prisma {
   export type CommentUpdateManyWithWhereWithoutPostInput = {
     where: CommentScalarWhereInput
     data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutPostInput>
+  }
+
+  export type TagUpsertWithWhereUniqueWithoutPostInput = {
+    where: TagWhereUniqueInput
+    update: XOR<TagUpdateWithoutPostInput, TagUncheckedUpdateWithoutPostInput>
+    create: XOR<TagCreateWithoutPostInput, TagUncheckedCreateWithoutPostInput>
+  }
+
+  export type TagUpdateWithWhereUniqueWithoutPostInput = {
+    where: TagWhereUniqueInput
+    data: XOR<TagUpdateWithoutPostInput, TagUncheckedUpdateWithoutPostInput>
+  }
+
+  export type TagUpdateManyWithWhereWithoutPostInput = {
+    where: TagScalarWhereInput
+    data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyWithoutPostInput>
+  }
+
+  export type TagScalarWhereInput = {
+    AND?: TagScalarWhereInput | TagScalarWhereInput[]
+    OR?: TagScalarWhereInput[]
+    NOT?: TagScalarWhereInput | TagScalarWhereInput[]
+    id?: StringFilter<"Tag"> | string
+    referenceUserId?: StringFilter<"Tag"> | string
+    createdAt?: DateTimeFilter<"Tag"> | Date | string
+    postId?: StringNullableFilter<"Tag"> | string | null
   }
 
   export type CollectionPostUpsertWithWhereUniqueWithoutPostInput = {
@@ -22281,6 +22552,7 @@ export namespace Prisma {
     createdAt?: Date | string
     likes?: LikeCreateNestedManyWithoutPostInput
     comments?: CommentCreateNestedManyWithoutPostInput
+    tags?: TagCreateNestedManyWithoutPostInput
     collections?: CollectionPostCreateNestedManyWithoutPostInput
   }
 
@@ -22291,6 +22563,7 @@ export namespace Prisma {
     createdAt?: Date | string
     likes?: LikeUncheckedCreateNestedManyWithoutPostInput
     comments?: CommentUncheckedCreateNestedManyWithoutPostInput
+    tags?: TagUncheckedCreateNestedManyWithoutPostInput
     collections?: CollectionPostUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -22306,11 +22579,13 @@ export namespace Prisma {
   export type TagCreateWithoutReferenceUserInput = {
     id?: string
     createdAt?: Date | string
+    post?: PostCreateNestedOneWithoutTagsInput
   }
 
   export type TagUncheckedCreateWithoutReferenceUserInput = {
     id?: string
     createdAt?: Date | string
+    postId?: string | null
   }
 
   export type TagCreateOrConnectWithoutReferenceUserInput = {
@@ -22495,15 +22770,6 @@ export namespace Prisma {
   export type TagUpdateManyWithWhereWithoutReferenceUserInput = {
     where: TagScalarWhereInput
     data: XOR<TagUpdateManyMutationInput, TagUncheckedUpdateManyWithoutReferenceUserInput>
-  }
-
-  export type TagScalarWhereInput = {
-    AND?: TagScalarWhereInput | TagScalarWhereInput[]
-    OR?: TagScalarWhereInput[]
-    NOT?: TagScalarWhereInput | TagScalarWhereInput[]
-    id?: StringFilter<"Tag"> | string
-    referenceUserId?: StringFilter<"Tag"> | string
-    createdAt?: DateTimeFilter<"Tag"> | Date | string
   }
 
   export type UserCreateWithoutFollowersInput = {
@@ -22941,6 +23207,12 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type TagCreateManyPostInput = {
+    id?: string
+    referenceUserId: string
+    createdAt?: Date | string
+  }
+
   export type CollectionPostCreateManyPostInput = {
     id?: string
     collectionId: string
@@ -22996,6 +23268,21 @@ export namespace Prisma {
     ownerId?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
     replyToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TagUpdateWithoutPostInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    referenceUser?: UserUpdateOneRequiredWithoutTagsNestedInput
+  }
+
+  export type TagUncheckedUpdateWithoutPostInput = {
+    referenceUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TagUncheckedUpdateManyWithoutPostInput = {
+    referenceUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23072,6 +23359,7 @@ export namespace Prisma {
   export type TagCreateManyReferenceUserInput = {
     id?: string
     createdAt?: Date | string
+    postId?: string | null
   }
 
   export type FollowUpdateWithoutFollowerInput = {
@@ -23213,6 +23501,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likes?: LikeUpdateManyWithoutPostNestedInput
     comments?: CommentUpdateManyWithoutPostNestedInput
+    tags?: TagUpdateManyWithoutPostNestedInput
     collections?: CollectionPostUpdateManyWithoutPostNestedInput
   }
 
@@ -23222,6 +23511,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likes?: LikeUncheckedUpdateManyWithoutPostNestedInput
     comments?: CommentUncheckedUpdateManyWithoutPostNestedInput
+    tags?: TagUncheckedUpdateManyWithoutPostNestedInput
     collections?: CollectionPostUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -23233,14 +23523,17 @@ export namespace Prisma {
 
   export type TagUpdateWithoutReferenceUserInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    post?: PostUpdateOneWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateWithoutReferenceUserInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TagUncheckedUpdateManyWithoutReferenceUserInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

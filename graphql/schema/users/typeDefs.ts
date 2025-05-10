@@ -1,7 +1,6 @@
 import { gql } from "graphql-tag";
 
 export const userTypeDefs = gql`
-  # User Type Definition
   type User {
     id: ID!
     username: String!
@@ -10,8 +9,20 @@ export const userTypeDefs = gql`
     profilePicture: String!
     bio: String
     createdAt: String! # Using String instead of DateTime for simplicity
-    followers: [User!]! # Self-referencing relationship
-    following: [User!]! # Self-referencing relationship
+    followers: [User!] # Self-referencing relationship
+    following: [User!] # Self-referencing relationship
+    likes: [Like!]
+    comments: [Comment!]
+    collections: [CollectionOwner!]
+    highlights: [HighlightOwner!]
+    stories: [Story!]
+    posts: [Post!]
+    taggedPosts: [Tag!]
+  }
+
+  type UserCollection {
+    collection: Collection!
+    posts: [Post!]
   }
 
   # Input types for mutations
